@@ -11,6 +11,8 @@ contract Functions {
 
     //view read blockchain vars
     //pure 
+    fallback() external payable {} // calls when we tying to call function that we don't have and enter some value
+    receive() external  payable {} // calls when we send some amount on contract adress without calling functions
 
     function getBalance() public view returns(uint) {
         return  address(this).balance;
