@@ -4,11 +4,15 @@ pragma solidity 0.8.17;
 contract Instructions {
     address owner;
 
+    event Paid(address indexed  _from, uint _amount, uint _timestamp);
+
     constructor() {
         owner = msg.sender;
     }
 
-    function pay() external payable {}
+    function pay() external payable {
+        emit Paid(msg.sender, msg.value, block.timestamp);
+    }
 
     modifier onlyOwner(address _to) {
          require(msg.sender == owner, "You are not owner!");
