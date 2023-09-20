@@ -29,5 +29,6 @@ contract Functions {
        return  message;
     }
 
+    function pay() external payable {}
 
 }
