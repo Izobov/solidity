@@ -10,11 +10,17 @@ contract Instructions {
 
     function pay() external payable {}
 
-    function withdraw(address payable _to) external {
+    modifier onlyOwner(address _to) {
+         require(msg.sender == owner, "You are not owner!");
+         require(_to != address(0), "Incorrect address");
+        _;
+    }
+
+    function withdraw(address payable _to) external onlyOwner(_to) {
         //Panci error
         // assert(msg.sender == owner);
         
-        require(msg.sender == owner, "You are not owner!");
+        // require(msg.sender == owner, "You are not owner!");
         
         // same thing
         // if (msg.sender != owner) {
