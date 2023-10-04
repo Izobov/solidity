@@ -39,6 +39,7 @@ contract Timelock {
         require(!queue[txId], " already in queue");
         queue[txId] = true;
         emit AddToQueue(txId);
+        return  txId;
     }
 
     function discard(bytes32 _txId) external onlyOwner {
@@ -67,8 +68,8 @@ contract Timelock {
         require(block.timestamp >= _timestamp, "too early");
         require(block.timestamp <= _timestamp + MAX_DELAY, "too late");
         delete queue[txId];
-        (bool success, bytes memory res) = _to.call{value: _value}(_data);
-        require(success, "tx failed");
+        (bool success, bytes memory res) = _to.call{value: _value}(data);
+        require(success);
         emit Executed(txId, res);
         return res;
     }
