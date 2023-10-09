@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 contract Functions {
     string message = "Hello";
@@ -10,27 +10,27 @@ contract Functions {
     //private visible only in contract
 
     //view read blockchain vars
-    //pure 
+    //pure
     fallback() external payable {} // calls when we tying to call function that we don't have and enter some value
-    receive() external  payable {} // calls when we send some amount on contract adress without calling functions
 
-    function getBalance() public view returns(uint) {
-        return  address(this).balance;
+    receive() external payable {} // calls when we send some amount on contract adress without calling functions
+
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
     }
 
-    function getBalance2() public view returns(uint balance) {
+    function getBalance2() public view returns (uint balance) {
         balance = address(this).balance;
-        return  balance;
+        return balance;
     }
 
     function setMessage(string memory newMsg) external {
         message = newMsg;
     }
 
-    function getMessage() external view returns(string memory) {
-       return  message;
+    function getMessage() external view returns (string memory) {
+        return message;
     }
 
     function pay() external payable {}
-
 }

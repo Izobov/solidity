@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 contract ComRev {
     address[] public candidates = [
@@ -13,7 +13,7 @@ contract ComRev {
     bool votingStopped;
 
     modifier isActive() {
-       require(!votingStopped, "Voting stoped!");
+        require(!votingStopped, "Voting stoped!");
         _;
     }
 
@@ -30,9 +30,11 @@ contract ComRev {
     function revealVote(address _candidate, bytes32 _secret) external {
         require(votingStopped, "Voting is in progress!");
 
-       bytes32 commit = keccak256(abi.encodePacked(_candidate, _secret, msg.sender));
-       require((commit == commits[msg.sender]));
-       delete commits[msg.sender];
-       votes[_candidate]++;
+        bytes32 commit = keccak256(
+            abi.encodePacked(_candidate, _secret, msg.sender)
+        );
+        require((commit == commits[msg.sender]));
+        delete commits[msg.sender];
+        votes[_candidate]++;
     }
 }

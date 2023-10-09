@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 contract Timelock {
     uint public constant MIN_DELAY = 10;
     uint public constant MAX_DELAY = 1 days;
     address[] public owners;
-    mapping (address => bool) public  isOwner;
+    mapping(address => bool) public isOwner;
     mapping(bytes32 => bool) public queue;
     event AddToQueue(bytes32 indexed txId);
     event Discarted(bytes32 indexed txId);
@@ -23,9 +23,9 @@ contract Timelock {
         uint confirmations;
     }
 
-    mapping (bytes32 => Transaction ) public  txs;
+    mapping(bytes32 => Transaction) public txs;
 
-    mapping (bytes32 => mapping (address => bool)) public confirmations;
+    mapping(bytes32 => mapping(address => bool)) public confirmations;
 
     modifier onlyOwner() {
         require(isOwner[msg.sender], "only owners");
@@ -40,7 +40,7 @@ contract Timelock {
     constructor(address[] memory _owners) {
         require(_owners.length >= CONFIRMATIONS_REQUIRED, "not enough owners!");
         for (uint i = 0; i < _owners.length; i++) {
-            address owner =_owners[i];
+            address owner = _owners[i];
             require(owner != address(0), "Address can't be zero");
             require(!isOwner[owner], "Address's should be unique");
             owners.push(owner);
@@ -74,17 +74,22 @@ contract Timelock {
             confirmations: 0
         });
         emit AddToQueue(txId);
-        return  txId;
+        return txId;
     }
 
-    function cancelConfirmation(bytes32 _txId) external onlyOwner inQueue(_txId){
-        require(confirmations[_txId][msg.sender], "You didn't confirmed this tx");
+    function cancelConfirmation(
+        bytes32 _txId
+    ) external onlyOwner inQueue(_txId) {
+        require(
+            confirmations[_txId][msg.sender],
+            "You didn't confirmed this tx"
+        );
         Transaction storage transaction = txs[_txId];
         transaction.confirmations--;
         confirmations[_txId][msg.sender] = false;
     }
 
-     function confirm(bytes32 _txId) external onlyOwner inQueue(_txId){
+    function confirm(bytes32 _txId) external onlyOwner inQueue(_txId) {
         require(!confirmations[_txId][msg.sender], "You've already confirmed");
         Transaction storage transaction = txs[_txId];
         transaction.confirmations++;
@@ -107,10 +112,13 @@ contract Timelock {
             abi.encode(_to, _func, _data, _value, _timestamp)
         );
         require(queue[txId], "not in queue");
-        
+
         Transaction storage transaction = txs[txId];
-        require(transaction.confirmations >= CONFIRMATIONS_REQUIRED, "Not enough confirmations");
-        require(!transaction.executed , "Already executed");
+        require(
+            transaction.confirmations >= CONFIRMATIONS_REQUIRED,
+            "Not enough confirmations"
+        );
+        require(!transaction.executed, "Already executed");
         require(block.timestamp >= _timestamp, "too early");
         require(block.timestamp <= _timestamp + MAX_DELAY, "too late");
 
@@ -120,7 +128,7 @@ contract Timelock {
         } else {
             data = _data;
         }
-        
+
         transaction.executed = true;
         delete queue[txId];
         (bool success, bytes memory res) = _to.call{value: _value}(data);

@@ -4,8 +4,12 @@ const { ethers } = require("hardhat");
 describe("Instructions", function () {
   let acc1, acc2, contract;
   beforeEach(async () => {
+    console.log(ethers);
     [acc1, acc2] = await ethers.getSigners();
-    const Contract = await ethers.getContractFactory("Instructions", acc1);
+    const Contract = await ethers.getContractFactory(
+      "Instructions",
+      acc1.address
+    );
     contract = await Contract.deploy();
     await contract.waitForDeployment();
   });

@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 import "./UserManager.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-
 
 contract CryptoPay {
     UserManager public userManager;
@@ -24,8 +23,11 @@ contract CryptoPay {
         require(isSent, "Error");
     }
 
-    function sendERC20(string memory nickname, address tokenAddress, uint amount) external payable {
-       
+    function sendERC20(
+        string memory nickname,
+        address tokenAddress,
+        uint amount
+    ) external payable {
         address user = checkUser(nickname);
         ERC20 token = ERC20(tokenAddress);
         bool isSent = token.transferFrom(msg.sender, user, amount);

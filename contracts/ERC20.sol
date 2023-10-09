@@ -1,7 +1,7 @@
 ///
 // https://eips.ethereum.org/EIPS/eip-20
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 interface IERC20 {
     /// @param _owner The address from which the balance will be retrieved

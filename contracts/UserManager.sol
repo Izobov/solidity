@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 contract UserManager {
     mapping(string => address) private users;
@@ -9,9 +9,9 @@ contract UserManager {
         users[nickname] = msg.sender;
     }
 
-    function getUserByName(string memory nickname) external view returns(address) {
+    function getUserByName(
+        string memory nickname
+    ) external view returns (address) {
         return users[nickname];
     }
-
-
 }

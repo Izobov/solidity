@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 contract MyContract {
     // vars should be in exact order as in AnotherContract because assigns will by slots index and not by name

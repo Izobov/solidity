@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.20;
 
 contract Ownable {
-address public owner;
+    address public owner;
 
     constructor(address ownerOverride) {
         owner = ownerOverride == address(0) ? msg.sender : ownerOverride;
@@ -13,27 +13,24 @@ address public owner;
         _;
     }
 
-    
-    function withdraw(address payable _to) public virtual  onlyOwner {
-        payable (owner).transfer(address(this).balance);
+    function withdraw(address payable _to) public virtual onlyOwner {
+        payable(owner).transfer(address(this).balance);
     }
 }
 
 abstract contract Balances is Ownable {
-    function getBalance() public view onlyOwner returns(uint) {
+    function getBalance() public view onlyOwner returns (uint) {
         return address(this).balance;
     }
 
-    function withdraw(address payable _to) public override virtual onlyOwner {
+    function withdraw(address payable _to) public virtual override onlyOwner {
         _to.transfer(getBalance());
-        
     }
-
 }
 
 contract MyContract is Ownable, Balances {
-    constructor(address _owner) Ownable(_owner) {
-    }
+    constructor(address _owner) Ownable(_owner) {}
+
     // constructor(address _owner) {
     //     owner = _owner;
     // }
@@ -41,5 +38,4 @@ contract MyContract is Ownable, Balances {
         // Balances.withdraw(_to);
         super.withdraw(_to);
     }
-  
 }
